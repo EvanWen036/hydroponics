@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      .page {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      .header {
+        background-color: lightblue;
+        text-align: center;
+        font-family: sans-serif;
+        width: inherit;
+        padding: 25px;
+        margin: -8px;
+      }
+      .content {
+        width: inherit;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+      }
+      .box {
+        text-align: center;
+        font-family: sans-serif;
+        width: inherit;
+        margin: 25px;
+        padding-left: 150px;
+        padding-right: 150px;
+        border-color: black;
+        border-style: solid;
+        border-radius: 25px;
+        background-color: lightgreen;
+        display: flex;
+        flex-direction: column;
+      }
+      .information {
+        width: 50%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      .warning {
+        width: 25%;
+        font-family: sans-serif;
+        position: relative;
+        color: white;
+        text-align: center;
+        border-color: black;
+        border-style: solid;
+        background-color: red;
+      }
+      .vibes {
+        width: 25%;
+        font-family: sans-serif;
+        position: relative;
+        color: white;
+        text-align: center;
+        border-color: black;
+        border-style: solid;
+        background-color: green;
+      }
+      .caution {
+        width: 25%;
+        font-family: sans-serif;
+        position: relative;
+        color: white;
+        text-align: center;
+        border-color: black;
+        border-style: solid;
+        background-color: #ffbf00;
+      }
+      .value {
+        border-style: solid;
+        font-family: sans-serif;
+        color: white;
+        background-color: green;
+        border-color: black;
+        padding-left: 25px;
+        padding-right: 25px;
+        margin-top: -15px;
+        border-radius: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <div class="header">
+        <h1>Welcome to the Duke Smart Home Hydroponic Garden!</h1>
+      </div>
+      <div class="content">
+        <div class="information">
+          <div class="box">
+            <h2>Current pH Level</h2>
+          </div>
+          <div class="value"><p>5.0</p></div>
+        </div>
+        <div class="information">
+          <div class="box">
+            <h2>Current TDS (Total Dissolved Solids)</h2>
+          </div>
+          <div class="value"><p>885 ppm</p></div>
+        </div>
+      </div>
+      <div class="warning">
+        <h1>IMMEDIATE ACTION REQUIRED</h1>
+        <p>Please immediately address the issues in the garden!</p>
+      </div>
+      <div class="vibes">
+        <h1>ALL IS GOOD</h1>
+        <p>Keep up the good work!</p>
+      </div>
+      <div class="caution">
+        <h1>WARNING</h1>
+        <p>Maintenance may be required soon!</p>
+      </div>
+    </div>
+  </body>
+</html>

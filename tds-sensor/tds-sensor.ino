@@ -1,7 +1,7 @@
 #include <WiFi.h>
 #include <WebServer.h>
 
-
+#define CONNECTION_TIMEOUT 10
 #define TdsSensorPin 27
 #define VREF 3.3      // analog reference voltage(Volt) of the ADC
 #define SCOUNT  30           // sum of sample point
@@ -10,33 +10,45 @@ int analogBufferTemp[SCOUNT];
 int analogBufferIndex = 0, copyIndex = 0;
 float averageVoltage = 0, tdsValue = 0, temperature = 25;
 
-char ssid[] = "DukeOpen";
-
-WebServer server(80);
+char ssid[] = "DukeVisitor";
+char pass[] = ""; 
+WiFiServer server(80);
 
 void setup()
 {
   Serial.begin(115200);
+  
   pinMode(TdsSensorPin, INPUT);
+  /**
 	WiFi.begin(ssid);
-	Serial.println("Establishing connection to WiFi with SSID: " + String(ssid) ) ;
 
-	while	(WiFi.status()	!=WL_CONNECTED)    {
+	Serial.println("Establishing connection to WiFi with SSID: " + String(ssid) ) ;
+  int timeout = 0;
+	while	(WiFi.status()	!= WL_CONNECTED)    {
     delay(1000) ;
-    Serial.println(".") ;
+    Serial.println(":) Connecting to WIFI") ;
+    timeout++;
+    if(timeout >= CONNECTION_TIMEOUT * 5){
+      ESP.restart();
+    }
   }
     Serial.println("\nConnected to the WiFi network");
     Serial.print("Local ESP IP: ");
-    Serial.println(WiFi.localIP());
+    Serial.println(WiFi.localIP()); 
+
+    server.begin();
+  **/
 }
 
 void loop()
 {
+
   static unsigned long analogSampleTimepoint = millis();
   if (millis() - analogSampleTimepoint > 40U)  //every 40 milliseconds,read the analog value from the ADC
   {
     analogSampleTimepoint = millis();
     analogBuffer[analogBufferIndex] = analogRead(TdsSensorPin);    //read the analog value and store into the buffer
+    Serial.println(analogBuffer[analogBufferIndex]);
     analogBufferIndex++;
     if (analogBufferIndex == SCOUNT)
       analogBufferIndex = 0;
@@ -51,13 +63,40 @@ void loop()
     float compensationCoefficient = 1.0 + 0.02 * (temperature - 25.0); //temperature compensation formula: fFinalResult(25^C) = fFinalResult(current)/(1.0+0.02*(fTP-25.0));
     float compensationVolatge = averageVoltage / compensationCoefficient; //temperature compensation
     tdsValue = (133.42 * compensationVolatge * compensationVolatge * compensationVolatge - 255.86 * compensationVolatge * compensationVolatge + 857.39 * compensationVolatge) * 0.5; //convert voltage value to tds value
-    //Serial.print("voltage:");
-    //Serial.print(averageVoltage,2);
-    //Serial.print("V   ");
-    //Serial.print("TDS----Value:");
-    //Serial.print(tdsValue, 0);
-    //Serial.println("ppm");
+    Serial.print("voltage:");
+    Serial.print(averageVoltage,2);
+    Serial.print("V   ");
+    Serial.print("TDS----Value:");
+    Serial.print(tdsValue, 0);
+    Serial.println("ppm");
+  } 
+/**
+WiFiClient client = server.available();
+  if (client) {
+    Serial.println("Client connected");
+    while (client.connected()) {
+      if (client.available()) {
+        // Respond to the client's request with HTTP headers
+        client.println("HTTP/1.1 200 OK");
+        client.println("Content-Type: text/html");
+        client.println("Connection: close");
+        client.println();
+
+        // Send your HTML content here
+        client.println("<!DOCTYPE html>");
+
+        client.println("<html><body>");
+        client.println("<h1>ESP32 Web Server</h1>");
+        client.println("<p>TDS Value: ppm</p>");
+        client.println("</body></html>");
+
+
+      }
+
   }
+    client.stop();
+    }
+  **/
 }
 int getMedianNum(int bArray[], int iFilterLen)
 {
